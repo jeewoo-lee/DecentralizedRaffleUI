@@ -1,0 +1,108 @@
+[
+  {
+    "inputs": [
+      { "internalType": "address", "name": "vrfCoordinatorV2", "type": "address" },
+      { "internalType": "address", "name": "nft", "type": "address" },
+      { "internalType": "address", "name": "_owner", "type": "address" },
+      { "internalType": "uint256", "name": "_minInput", "type": "uint256" },
+      { "internalType": "uint256", "name": "_itemPrice", "type": "uint256" },
+      { "internalType": "uint256", "name": "_raffleID", "type": "uint256" },
+      { "internalType": "uint32", "name": "_interval", "type": "uint32" },
+      { "internalType": "address", "name": "raffleFactory", "type": "address" }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "have", "type": "address" },
+      { "internalType": "address", "name": "want", "type": "address" }
+    ],
+    "name": "OnlyCoordinatorCanFulfill",
+    "type": "error"
+  },
+  { "inputs": [{ "internalType": "string", "name": "m", "type": "string" }], "name": "Raffle__CannotWithdraw", "type": "error" },
+  { "inputs": [], "name": "Raffle__NotEnoughMoney", "type": "error" },
+  { "inputs": [], "name": "Raffle__NotOpen", "type": "error" },
+  { "inputs": [], "name": "Raffle__NotOwner", "type": "error" },
+  { "inputs": [], "name": "Raffle__TransferFailed", "type": "error" },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "currentBalance", "type": "uint256" },
+      { "internalType": "bool", "name": "raffleState", "type": "bool" }
+    ],
+    "name": "Raffle__UpkeepNotNeeded",
+    "type": "error"
+  },
+  { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "string", "name": "msg", "type": "string" }], "name": "InadequateFunding", "type": "event" },
+  { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "player", "type": "address" }], "name": "LoserAlerted", "type": "event" },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "player", "type": "address" },
+      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }
+    ],
+    "name": "RaffleEnter",
+    "type": "event"
+  },
+  { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "uint256", "name": "requestId", "type": "uint256" }], "name": "RequestedRaffleWinner", "type": "event" },
+  { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "player", "type": "address" }], "name": "WinnerAlerted", "type": "event" },
+  { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "uint256", "name": "winNum", "type": "uint256" }], "name": "WinnerPicked", "type": "event" },
+  { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "player", "type": "address" }], "name": "Withdrawed", "type": "event" },
+  {
+    "inputs": [{ "internalType": "bytes", "name": "", "type": "bytes" }],
+    "name": "checkUpkeep",
+    "outputs": [
+      { "internalType": "bool", "name": "upkeepNeeded", "type": "bool" },
+      { "internalType": "bytes", "name": "", "type": "bytes" }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_tokenId", "type": "uint256" }],
+    "name": "checkWin",
+    "outputs": [{ "internalType": "bool", "name": "isWinner", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  { "inputs": [], "name": "enterRaffle", "outputs": [], "stateMutability": "payable", "type": "function" },
+  { "inputs": [], "name": "i_item_price", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
+  { "inputs": [], "name": "i_minInputMoney", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
+  { "inputs": [], "name": "i_owner", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" },
+  { "inputs": [{ "internalType": "bytes", "name": "", "type": "bytes" }], "name": "performUpkeep", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "requestId", "type": "uint256" },
+      { "internalType": "uint256[]", "name": "randomWords", "type": "uint256[]" }
+    ],
+    "name": "rawFulfillRandomWords",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  { "inputs": [], "name": "s_canUserWithdraw", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "stateMutability": "view", "type": "function" },
+  {
+    "inputs": [],
+    "name": "s_raffleState",
+    "outputs": [
+      { "internalType": "bool", "name": "isOpen", "type": "bool" },
+      { "internalType": "uint32", "name": "interval", "type": "uint32" },
+      { "internalType": "uint256", "name": "raffleId", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  { "inputs": [], "name": "s_squared_total", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
+  { "inputs": [], "name": "s_total_deposited", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
+  { "inputs": [], "name": "s_winNum", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
+  { "inputs": [], "name": "startRaffle", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "tokenId", "type": "uint256" }],
+    "name": "tokenChances",
+    "outputs": [{ "internalType": "uint256", "name": "chance", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  { "inputs": [{ "internalType": "uint256", "name": "_tokenId", "type": "uint256" }], "name": "withrdaw", "outputs": [], "stateMutability": "nonpayable", "type": "function" }
+]
