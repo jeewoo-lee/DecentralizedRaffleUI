@@ -12,8 +12,10 @@ export default function LotteryEntrance() {
   const [itemPrice, setitemPrice] = useState("0")
   const [totalDeposited, settotalDeposited] = useState("0")
   const [recentWinNum, setrecentWinNum] = useState("0")
+  const [raffleState, setRaffleState] = useState("0")
 
   const formatUnits = ethers.utils.formatUnits
+  const parseEther = ethers.utils.parseEther
 
   const dispatch = useNotification()
 
@@ -26,7 +28,7 @@ export default function LotteryEntrance() {
     contractAddress: raffleAddress, // specify the network id
     functionName: "enterRaffle",
     params: {},
-    msgValue: itemPrice,
+    msgValue: parseEther("0.1"),
   })
 
   const { runContractFunction: i_item_price } = useWeb3Contract({
@@ -50,13 +52,22 @@ export default function LotteryEntrance() {
     params: {},
   })
 
+  const { runContractFunction: s_raffleState } = useWeb3Contract({
+    abi: abi,
+    contractAddress: raffleAddress,
+    functionName: "s_raffleState",
+    params: {},
+  })
+
   async function updateUI() {
     const itemPriceFromCall = (await i_item_price()).toString()
     const totalDepositedFromCall = (await s_total_deposited()).toString()
     const winNumFromCall = (await s_winNum()).toString()
+    const raffleStateFromCall = (await s_raffleState()).toString()
     setitemPrice(itemPriceFromCall)
     settotalDeposited(totalDepositedFromCall)
     setrecentWinNum(winNumFromCall)
+    setRaffleState(raffleStateFromCall)
   }
 
   useEffect(() => {
@@ -103,6 +114,7 @@ export default function LotteryEntrance() {
           <div>Item Price: {ethers.utils.formatUnits(itemPrice, "ether")}</div>
           <div>Total Deposited: {formatUnits(totalDeposited)}</div>
           <div>Winning Number: {recentWinNum}</div>
+          <div>Raffle State: {raffleState}</div>
         </div>
       ) : (
         <div>Unsupported Network :( </div>

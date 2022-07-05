@@ -6,6 +6,7 @@ import Header from "../components/Header"
 import LotteryEntrance from "../components/LotteryEntrance"
 import Link from "next/link"
 import NavBar from "../components/NavBar"
+import CreateRaffle from "../components/CreateRaffle"
 
 export default function Admin() {
   return (
@@ -22,7 +23,7 @@ export default function Admin() {
         <a>this page!</a>
       </Link> */}
       <NavBar></NavBar>
-      <LotteryEntrance />
+      <CreateRaffle />
     </div>
   )
 }
