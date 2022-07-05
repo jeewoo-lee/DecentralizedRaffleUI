@@ -1,0 +1,40 @@
+[
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_minInput", "type": "uint256" },
+      { "internalType": "address", "name": "_vrfAddress", "type": "address" },
+      { "internalType": "bytes32", "name": "_gasLane", "type": "bytes32" },
+      { "internalType": "uint64", "name": "_subscriptionID", "type": "uint64" },
+      { "internalType": "uint32", "name": "_callbackGasLimit", "type": "uint32" }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  { "inputs": [], "name": "RaffleFactory__NotOwner", "type": "error" },
+  { "inputs": [], "name": "NUM_WORDS", "outputs": [{ "internalType": "uint32", "name": "", "type": "uint32" }], "stateMutability": "view", "type": "function" },
+  { "inputs": [], "name": "REQUEST_CONFIRMATIONS", "outputs": [{ "internalType": "uint16", "name": "", "type": "uint16" }], "stateMutability": "view", "type": "function" },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_itemPrice", "type": "uint256" },
+      { "internalType": "uint32", "name": "_interval", "type": "uint32" }
+    ],
+    "name": "createRaffle",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  { "inputs": [], "name": "i_callbackGasLimit", "outputs": [{ "internalType": "uint32", "name": "", "type": "uint32" }], "stateMutability": "view", "type": "function" },
+  { "inputs": [], "name": "i_gasLane", "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }], "stateMutability": "view", "type": "function" },
+  { "inputs": [], "name": "i_subscriptionId", "outputs": [{ "internalType": "uint64", "name": "", "type": "uint64" }], "stateMutability": "view", "type": "function" },
+  { "inputs": [], "name": "minInput", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
+  { "inputs": [], "name": "nftAddress", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" },
+  { "inputs": [], "name": "owner", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" },
+  { "inputs": [], "name": "raffleId", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "name": "raffles",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

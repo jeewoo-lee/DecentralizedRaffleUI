@@ -84,12 +84,12 @@ export default function LotteryEntrance() {
   }
 
   return (
-    <div>
+    <div className="flex justify-center items-center flex-col">
       {raffleAddress ? (
-        <div className="p-5">
-          <div>Hi from Lottery Entrance!</div>
+        <div className="p-5 bg-center">
+          <div className="text-xl	text-fuchsia-500">Raffle Entrance!</div>
           <button
-            className="bg-violet-500 hover:bg-violet-600 text-white font-mono py-2 px-4 rounded ml-auto"
+            className="bg-violet-500 hover:bg-violet-600 text-white font-mono py-2 px-4 rounded self-center"
             onClick={async function () {
               await enterRaffle({
                 onSuccess: handleSuccess, //transaction is sent to metamask

@@ -8,7 +8,8 @@ function NavBar() {
   return (
     <div>
       {/* for Main Nav Container */}
-      <nav className="shadow-sm fixed w-full z-10">
+      {/* <nav className="shadow-sm fixed w-full z-10"> */}
+      <nav className="m-0 border-b-2 flex flex-row">
         <div className="w-full">
           <div className="flex items-center h-20 w-full">
             {/* first block section Outer Part */}
@@ -17,23 +18,28 @@ function NavBar() {
                 <h1 className="font-bold text-3xl cursor-pointer">
                   <a href="/">
                     <span className="text-blue-500">Ely</span>
-                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-pink-500" duration={500}>Raffle</span>
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-pink-500" duration={500}>
+                      Raffle
+                    </span>
                   </a>
                 </h1>
               </div>
               <div className="hidden md:block">
                 <div className="ml-10 flex items-baseline spacce-x-4">
-                  <a href="/" className="cursor-pointer px-3 py-2 text-lg hover:text-gray-400">
+                  <a href="/" className="cursor-pointer px-3 py-2 text-lg hover:text-violet-600">
                     Team
                   </a>
-                  <a href="/" className="cursor-pointer px-3 py-2 text-lg hover:text-gray-400">
+                  <a href="/" className="cursor-pointer px-3 py-2 text-lg hover:text-violet-600">
                     Learn
                   </a>
-                  <a href="/" className="cursor-pointer px-3 py-2 text-lg hover:text-gray-400">
+                  <a href="/" className="cursor-pointer px-3 py-2 text-lg hover:text-violet-600">
                     Docs
                   </a>
-                  <a href="/" className="cursor-pointer px-3 py-2 text-lg hover:text-gray-400">
+                  <a href="/" className="cursor-pointer px-3 py-2 text-lg hover:text-violet-600">
                     Raffles
+                  </a>
+                  <a href="/admin" className="cursor-pointer px-3 py-2 text-lg hover:text-violet-600">
+                    Create
                   </a>
                   <ConnectButton />
 
@@ -60,6 +66,8 @@ function NavBar() {
           </div>
         </div>
       </nav>
+
+      {/* </nav> */}
     </div>
   )
 }
