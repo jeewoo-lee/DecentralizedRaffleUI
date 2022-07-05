@@ -3,7 +3,7 @@ import { Transition } from "@headlessui/react" // smooth transition between tabs
 import { Link } from "next/link" // Alternate for a tag. We use Link for ref.
 import { navLinks } from "../utils/data"
 
-function NavVar() {
+function NavBar() {
   return (
     <div>
       {/* for Main Nav Container */}
@@ -14,15 +14,21 @@ function NavVar() {
             <div className="flex items items-center mx-20 justify-between w-full">
               <div className="flex justify-center items-center flex-shrink-0">
                 <h1 className="font-bold text-3xl cursor-pointer">
-                  <span className="text-blue-500">Ely</span>
-                  <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-pink-500">Raffle</span>
+                  <a href="/">
+                    <span className="text-blue-500">Ely</span>
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-pink-500">Raffle</span>
+                  </a>
                 </h1>
               </div>
               <div className="hidden md:block">
                 <div className="ml-10 flex items-baseline spacce-x-4">
-                  <h1 className="title">
-                    Learn <a href="/" className="cursor-pointer text-blue-600 font-semibold px-3 py-2 text-md hover:font-bold">Next.js!</a>
-                  </h1>
+                  <a href="/" className="cursor-pointer px-3 py-2 text-lg hover:text-blue-600">
+                    About
+                  </a>
+                  <a href="/" className="cursor-pointer px-3 py-2 text-lg hover:text-blue-600">
+                    Raffles
+                  </a>
+
                   {/* <Link href="/">
                     <a className="cursor-pointer text-blue-600 font-semibold px-3 py-2 text-md hover:font-bold"> Home</a>
                   </Link> */}
@@ -50,4 +56,4 @@ function NavVar() {
   )
 }
 
-export default NavVar
+export default NavBar

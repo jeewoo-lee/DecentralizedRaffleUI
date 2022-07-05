@@ -5,9 +5,9 @@ import styles from "../styles/Home.module.css"
 import Header from "../components/Header"
 import LotteryEntrance from "../components/LotteryEntrance"
 import Link from "next/link"
-import NavVar from "../components/NavVar"
+import NavBar from "../components/NavBar"
 
-export default function Admin() {
+export default function Raffle() {
   return (
     <div className={styles.container}>
       <Head>
@@ -21,7 +21,8 @@ export default function Admin() {
       <Link href="/">
         <a>this page!</a>
       </Link> */}
-      <NavVar></NavVar>
+      <NavBar></NavBar>
+      <LotteryEntrance />
     </div>
   )
 }
