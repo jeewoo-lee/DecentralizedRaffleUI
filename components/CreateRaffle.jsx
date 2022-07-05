@@ -107,7 +107,7 @@ export default function CreateRaffle() {
           {/* <div>Winning Number: {recentWinNum}</div> */}
         </div>
       ) : (
-        <div>Unsupported Network :( </div>
+        <div className="text-red-500">Connect to the valid Network! </div>
       )}
     </div>
   )

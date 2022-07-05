@@ -4,6 +4,8 @@ import { abi, contractAddress } from "../constants"
 import { useEffect, useState } from "react"
 import { ethers } from "ethers"
 import { useNotification } from "web3uikit"
+import factoryABI from "../constants/factoryABI.json"
+import factoryAddress from "../constants/factoryAddress.json"
 
 export default function LotteryEntrance() {
   const { chainId: chainIdHex, isWeb3Enabled } = useMoralis()
@@ -117,7 +119,7 @@ export default function LotteryEntrance() {
           <div>Raffle State: {raffleState}</div>
         </div>
       ) : (
-        <div>Unsupported Network :( </div>
+        <div className="text-red-500">Connect to the valid Network! </div>
       )}
     </div>
   )

@@ -4,13 +4,13 @@ import { Transition } from "@headlessui/react" // smooth transition between tabs
 import { Link } from "next/link" // Alternate for a tag. We use Link for ref.
 import { navLinks } from "../utils/data"
 
-function NavBar() {
+export default function NavBar() {
   return (
     <div>
       {/* for Main Nav Container */}
       {/* <nav className="shadow-sm fixed w-full z-10"> */}
-      <nav className="m-0 border-b-2 flex flex-row">
-        <div className="w-full">
+      <nav className="w-screen m-0 border-b flex flex-row">
+        <div className="w-screen">
           <div className="flex items-center h-20 w-full">
             {/* first block section Outer Part */}
             <div className="flex items items-center mx-20 justify-between w-full">
@@ -71,5 +71,3 @@ function NavBar() {
     </div>
   )
 }
-
-export default NavBar
