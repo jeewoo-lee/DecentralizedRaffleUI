@@ -1,4 +1,5 @@
 import React from "react"
+import { ConnectButton } from "web3uikit"
 import { Transition } from "@headlessui/react" // smooth transition between tabs
 import { Link } from "next/link" // Alternate for a tag. We use Link for ref.
 import { navLinks } from "../utils/data"
@@ -22,12 +23,13 @@ function NavBar() {
               </div>
               <div className="hidden md:block">
                 <div className="ml-10 flex items-baseline spacce-x-4">
-                  <a href="/" className="cursor-pointer px-3 py-2 text-lg hover:text-blue-600">
+                  <a href="/" className="cursor-pointer px-3 py-2 text-lg hover:text-gray-400">
                     About
                   </a>
-                  <a href="/" className="cursor-pointer px-3 py-2 text-lg hover:text-blue-600">
+                  <a href="/" className="cursor-pointer px-3 py-2 text-lg hover:text-gray-400">
                     Raffles
                   </a>
+                  <ConnectButton />
 
                   {/* <Link href="/">
                     <a className="cursor-pointer text-blue-600 font-semibold px-3 py-2 text-md hover:font-bold"> Home</a>
