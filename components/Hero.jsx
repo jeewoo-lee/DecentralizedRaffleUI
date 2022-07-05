@@ -8,10 +8,10 @@ function Hero() {
         <h1>Decentralized Raffle</h1>
       </div>
       <span className="text-sm font-light">
-        Earn your chance to get Jordans, Yeezys, or Teslas with just few bucks!
+        Earn your chance to get Jordans, Yeezys, Teslas or whatever is listed with just few bucks! 🙏
       </span>
       <div className="flex justify-center items-center cursor-pointer hover:shadow-lg text-lg text-white bg-black py-2 px-4 rounded-lg">
-        <a href="/raffle">Join Right Now!</a>
+        <a href="/raffle">🔥 Join Right Now! 💪</a>
       </div>
     </div>
   )

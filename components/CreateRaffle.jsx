@@ -15,9 +15,13 @@ export default function CreateRaffle() {
   const [raffleId, setRaffleId] = useState("0")
 
   const formatUnits = ethers.utils.formatUnits
+  const parseEther = ethers.utils.parseEther
+
   const dispatch = useNotification()
 
   let itemPrice, interval, inputId
+  itemPrice = parseEther("0.01")
+  interval = 120
 
   const {
     runContractFunction: createRaffle,

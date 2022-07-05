@@ -35,7 +35,7 @@ function NavBar() {
                   <a href="/" className="cursor-pointer px-3 py-2 text-lg hover:text-violet-600">
                     Docs
                   </a>
-                  <a href="/" className="cursor-pointer px-3 py-2 text-lg hover:text-violet-600">
+                  <a href="/raffle" className="cursor-pointer px-3 py-2 text-lg hover:text-violet-600">
                     Raffles
                   </a>
                   <a href="/admin" className="cursor-pointer px-3 py-2 text-lg hover:text-violet-600">
