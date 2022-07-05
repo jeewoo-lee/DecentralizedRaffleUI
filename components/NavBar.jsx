@@ -17,14 +17,20 @@ function NavBar() {
                 <h1 className="font-bold text-3xl cursor-pointer">
                   <a href="/">
                     <span className="text-blue-500">Ely</span>
-                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-pink-500">Raffle</span>
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-pink-500" duration={500}>Raffle</span>
                   </a>
                 </h1>
               </div>
               <div className="hidden md:block">
                 <div className="ml-10 flex items-baseline spacce-x-4">
                   <a href="/" className="cursor-pointer px-3 py-2 text-lg hover:text-gray-400">
-                    About
+                    Team
+                  </a>
+                  <a href="/" className="cursor-pointer px-3 py-2 text-lg hover:text-gray-400">
+                    Learn
+                  </a>
+                  <a href="/" className="cursor-pointer px-3 py-2 text-lg hover:text-gray-400">
+                    Docs
                   </a>
                   <a href="/" className="cursor-pointer px-3 py-2 text-lg hover:text-gray-400">
                     Raffles
