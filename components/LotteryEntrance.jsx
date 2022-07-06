@@ -20,6 +20,7 @@ export default function LotteryEntrance() {
   const [recentWinNum, setRecentWinNum] = useState("0")
   const [raffleState, setRaffleState] = useState("0")
   const [raffleAddress, setRaffleAddress] = useState("0")
+  const [winMsg, setWinMsg] = useState(" ")
 
   const formatUnits = ethers.utils.formatUnits
   const parseEther = ethers.utils.parseEther
@@ -82,24 +83,41 @@ export default function LotteryEntrance() {
     })
   }
 
+  const [tokenId, setTokenId] = useState(0)
+
+  const handleChange = (event) => {
+    setTokenId(event.target.value)
+
+    console.log("value is:", event.target.value)
+  }
+
+  const tokenHandleClick = (event) => {
+    event.preventDefault()
+
+    // 👇️ value of input field
+    console.log("tokenHandleClick 👉️", tokenId)
+    checkWin()
+  }
+
+  async function checkWin() {
+    const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner()
+    console.log(raffleAddress.toString())
+    const raffle = new ethers.Contract(raffleAddress, abi, signer)
+    const isWinner = await raffle.checkWin(tokenId)
+    if (isWinner && recentWinNum != 0) {
+      console.log("You're the winner. Congrats 🔥")
+      setWinMsg("You're the winner. Congrats 🔥")
+    } else {
+      console.log("You didn't win this time. 😪 Don't worry, you can win next time! 🤞")
+      setWinMsg("You didn't win this time. 😪 Don't worry, you can win next time! 🤞")
+    }
+  }
+
   return (
     <div className="flex justify-center items-center flex-col">
       {raffleFactoryAddress ? (
         <div className="p-5 bg-center">
           <div className="text-xl	text-fuchsia-500">Raffle Entrance!</div>
-          {/* <button
-            className="bg-violet-500 hover:bg-violet-600 text-white font-mono py-2 px-4 rounded self-center"
-            onClick={async function () {
-              await enterRaffle({
-                onSuccess: handleSuccess, //transaction is sent to metamask
-                onError: (error) => console.log(error),
-              })
-            }}
-            disabled={isFetching || isLoading}
-          >
-            {isFetching || isLoading ? <div className="animate-spin spinner-border h-8 w-8 border-b-2 rounded-full"></div> : <div>Enter Raffle</div>}
-          </button> */}
-
           <button
             className="bg-violet-500 hover:bg-violet-600 text-white font-mono py-2 px-4 rounded self-center"
             onClick={async function () {
@@ -124,18 +142,32 @@ export default function LotteryEntrance() {
           <div>Raffle State: {raffleState.toString()}</div>
           <div>Raffle Address: {raffleAddress.toString()}</div>
           <div>
-            <form onSubmit={this.handleSubmit}>
-              <label>
-                Name:
-                <input type="text" value={this.state.value} onChange={this.handleChange} />
-              </label>
-              <input type="submit" value="Submit" />
+            <form class="w-full max-w-sm">
+              <div class="flex items-center border-b border-violet-500 py-2">
+                <input
+                  class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+                  type="text"
+                  placeholder="Enter Token ID ... "
+                  aria-label="Token ID"
+                  onChange={handleChange}
+                />
+                <button
+                  onClick={tokenHandleClick}
+                  class="flex-shrink-0 bg-violet-500 hover:bg-violet-700 border-violet-500 hover:border-violet-700 text-sm border-4 text-white py-1 px-2 rounded"
+                  type="button"
+                >
+                  Check Win
+                </button>
+              </div>
             </form>
           </div>
         </div>
       ) : (
         <div className="text-red-500">Connect to the valid Network! </div>
       )}
+      <div>
+        {winMsg}
+      </div>
     </div>
   )
 }
