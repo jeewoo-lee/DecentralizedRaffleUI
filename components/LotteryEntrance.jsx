@@ -6,6 +6,7 @@ import { ethers } from "ethers"
 import { useNotification } from "web3uikit"
 import factoryABI from "../constants/factoryABI.json"
 import factoryAddress from "../constants/factoryAddress.json"
+import { check } from "prettier"
 
 export default function LotteryEntrance() {
   const { chainId: chainIdHex, isWeb3Enabled } = useMoralis()
@@ -19,7 +20,7 @@ export default function LotteryEntrance() {
   const [totalDeposited, setTotalDeposited] = useState("0")
   const [recentWinNum, setRecentWinNum] = useState("0")
   const [raffleState, setRaffleState] = useState("0")
-  const [raffleAddress, setRaffleAddress] = useState("0")
+  const [raffleAddress, setRaffleAddress] = useState("")
   const [winMsg, setWinMsg] = useState(" ")
   const inputRef = useRef(0)
 
@@ -119,7 +120,7 @@ export default function LotteryEntrance() {
     const enterAmount = inputRef.current.value
 
     // !raffleState.isOpen
-    if (false) {
+    if (!raffleState.isOpen) {
       alert("This Raffle is not opened yet!")
       console.log("balance: ", (await signer.getBalance()).toString())
     } else if (enterAmount.toString() > formatUnits((await signer.getBalance()).toString())) {
@@ -127,8 +128,8 @@ export default function LotteryEntrance() {
     } else {
       const raffle = new ethers.Contract(theAddress, abi, signer)
       await raffle.enterRaffle({
-        value: itemPrice.add(parseEther(enterAmount)),
-        gasLimit: 200000,
+        value: parseEther(enterAmount),
+        gasLimit: 500000,
       })
     }
   }
@@ -147,15 +148,25 @@ export default function LotteryEntrance() {
     }
   }
 
+  async function checkOwner() {
+    const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner()
+    const raffle = new ethers.Contract(raffleAddress, abi, signer)
+    const accountAddress = (await signer.getAddress()).toString()
+    const owner = await raffle.i_owner()
+    return accountAddress == owner
+  }
+
   return (
     <div className="flex justify-center items-center flex-col">
       {raffleFactoryAddress ? (
         <div className="p-5 bg-center">
-          <div className="text-xl	text-fuchsia-500">Raffle Entrance!</div>
+          <div className="text-xl	text-fuchsia-500">
+            <h1>Raffle Entrance!</h1>
+          </div>
           <form className="w-full max-w-sm">
             <div className="flex items-center border-b border-violet-500 py-2">
               <input
-              ref={inputRef}
+                ref={inputRef}
                 className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
                 type="text"
                 placeholder="Enter Amount "
@@ -185,11 +196,26 @@ export default function LotteryEntrance() {
           >
             Enter Raffle
           </button> */}
-          <div>Item Price: {formatUnits(itemPrice.toString())}</div>
-          <div>Total Deposited: {formatUnits(totalDeposited.toString())}</div>
-          <div>Winning Number: {recentWinNum.toString()}</div>
-          <div>Raffle State: {raffleState.toString()}</div>
-          <div>Raffle Address: {raffleAddress.toString()}</div>
+          <div>
+            <div>
+              🏷 <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">Item Price:</span>{" "}
+              <span className="text-blue-500">{formatUnits(itemPrice.toString())}</span>
+            </div>
+            <div>
+              🏦 <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">Total Deposited:</span>{" "}
+              <span className="text-blue-500">{formatUnits(totalDeposited.toString())}</span>
+            </div>
+            <div>
+              🏆 <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">Winning Number:</span> <span className="text-blue-500">{recentWinNum.toString()}</span>
+            </div>
+            <div>
+              🎟 <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">Raffle State:</span> <span className="text-blue-500">{raffleState.toString()}</span>
+            </div>
+            <div>
+              🏠 <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">Raffle Address:</span> <span className="text-blue-500">{raffleAddress.toString()}</span>
+            </div>
+          </div>
+
           <div>
             <form className="w-full max-w-sm">
               <div className="flex items-center border-b border-violet-500 py-2">
@@ -214,7 +240,16 @@ export default function LotteryEntrance() {
       ) : (
         <div className="text-red-500">Connect to the valid Network! </div>
       )}
-      <div>{winMsg}</div>
+      <div className="justify-center items-center">{winMsg}</div>
+      {/* {checkOwner() ? (
+        <div>
+          <button className="bg-red-500 hover:bg-violet-600 text-white font-mono py-1 px-6 rounded self-center" onClick={raffleHandleClick}>
+            Start Raffle
+          </button>
+        </div>
+      ) : (
+        <div />
+      )} */}
     </div>
   )
 }

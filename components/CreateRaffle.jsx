@@ -20,7 +20,7 @@ export default function CreateRaffle() {
 
   let itemPrice, interval, inputId
   itemPrice = parseEther("0.01")
-  interval = 120
+  interval = 1200
 
   const {
     runContractFunction: createRaffle,
