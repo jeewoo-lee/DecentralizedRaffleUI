@@ -9,7 +9,7 @@ export default function NavBar() {
     <div>
       {/* for Main Nav Container */}
       {/* <nav className="shadow-sm fixed w-full z-10"> */}
-      <nav className="w-screen m-0 border-b flex flex-row">
+      <nav className="w-screen m-0 flex flex-row">
         <div className="w-screen">
           <div className="flex items-center h-20 w-full">
             {/* first block section Outer Part */}

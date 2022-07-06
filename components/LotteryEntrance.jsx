@@ -10,6 +10,9 @@ import factoryAddress from "../constants/factoryAddress.json"
 export default function LotteryEntrance() {
   const { chainId: chainIdHex, isWeb3Enabled } = useMoralis()
   const chainId = parseInt(chainIdHex)
+
+  const raffleFactory = chainId in factoryAddress ? factoryAddress[chainId][0] : null
+
   const raffleAddress = chainId in contractAddress ? contractAddress[chainId][0] : null
   const [itemPrice, setitemPrice] = useState("0")
   const [totalDeposited, settotalDeposited] = useState("0")
