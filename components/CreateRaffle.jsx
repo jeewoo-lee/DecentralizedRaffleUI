@@ -16,7 +16,6 @@ export default function CreateRaffle() {
 
   const formatUnits = ethers.utils.formatUnits
   const parseEther = ethers.utils.parseEther
-
   const dispatch = useNotification()
 
   let itemPrice, interval, inputId
@@ -62,6 +61,11 @@ export default function CreateRaffle() {
     setRaffleId(raffleIdFromCall)
     setMinInput(minInputFromCall)
   }
+
+  async function updataRaffleAddresss() {
+
+  }
+
   useEffect(() => {
     if (isWeb3Enabled) {
       if (raffleFactory) {
