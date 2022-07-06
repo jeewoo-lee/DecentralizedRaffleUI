@@ -1,7 +1,7 @@
 // have a function to call the lottery
 import { useMoralis, useWeb3Contract } from "react-moralis"
 import { abi, contractAddress } from "../constants"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { ethers } from "ethers"
 import { useNotification } from "web3uikit"
 import factoryABI from "../constants/factoryABI.json"
@@ -21,7 +21,7 @@ export default function LotteryEntrance() {
   const [raffleState, setRaffleState] = useState("0")
   const [raffleAddress, setRaffleAddress] = useState("0")
   const [winMsg, setWinMsg] = useState(" ")
-  const [enterAmount, setEnterAmount] = useState("0")
+  const inputRef = useRef(0)
 
   const formatUnits = ethers.utils.formatUnits
   const parseEther = ethers.utils.parseEther
@@ -100,21 +100,34 @@ export default function LotteryEntrance() {
     checkWin()
   }
 
+  const raffleHandleChange = (event) => {
+    // setEnterAmount(event.target.value)
+    // console.log(enterAmount)
+  }
+
   const raffleHandleClick = (event) => {
     event.preventDefault()
+    // console.log("enter:", enterAmount)
+    // setEnterAmount(event.target.value)
+    // console.log(enterAmount)
     enterRaffle()
   }
 
   const enterRaffle = async () => {
-    setEnterAmount()
-    if (!raffleState.isOpen) {
+    const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner()
+    const theAddress = raffleAddress.toString()
+    const enterAmount = inputRef.current.value
+
+    // !raffleState.isOpen
+    if (false) {
       alert("This Raffle is not opened yet!")
+      console.log("balance: ", (await signer.getBalance()).toString())
+    } else if (enterAmount.toString() > formatUnits((await signer.getBalance()).toString())) {
+      alert("You don't have enough money")
     } else {
-      const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner()
-      const theAddress = raffleAddress.toString()
       const raffle = new ethers.Contract(theAddress, abi, signer)
       await raffle.enterRaffle({
-        value: itemPrice.add(enterAmount),
+        value: itemPrice.add(parseEther(enterAmount)),
         gasLimit: 200000,
       })
     }
@@ -139,13 +152,15 @@ export default function LotteryEntrance() {
       {raffleFactoryAddress ? (
         <div className="p-5 bg-center">
           <div className="text-xl	text-fuchsia-500">Raffle Entrance!</div>
-          <form class="w-full max-w-sm">
-            <div class="flex items-center border-b border-violet-500 py-2">
+          <form className="w-full max-w-sm">
+            <div className="flex items-center border-b border-violet-500 py-2">
               <input
-                class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+              ref={inputRef}
+                className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
                 type="text"
                 placeholder="Enter Amount "
                 aria-label="Enter Raffle"
+                onChange={raffleHandleChange}
               />
               <button className="bg-violet-500 hover:bg-violet-600 text-white font-mono py-1 px-6 rounded self-center" onClick={raffleHandleClick}>
                 Enter Raffle
@@ -170,16 +185,16 @@ export default function LotteryEntrance() {
           >
             Enter Raffle
           </button> */}
-          <div>Item Price: {ethers.utils.formatUnits(itemPrice.toString(), "ether")}</div>
+          <div>Item Price: {formatUnits(itemPrice.toString())}</div>
           <div>Total Deposited: {formatUnits(totalDeposited.toString())}</div>
           <div>Winning Number: {recentWinNum.toString()}</div>
           <div>Raffle State: {raffleState.toString()}</div>
           <div>Raffle Address: {raffleAddress.toString()}</div>
           <div>
-            <form class="w-full max-w-sm">
-              <div class="flex items-center border-b border-violet-500 py-2">
+            <form className="w-full max-w-sm">
+              <div className="flex items-center border-b border-violet-500 py-2">
                 <input
-                  class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+                  className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
                   type="text"
                   placeholder="Enter Token ID ... "
                   aria-label="Token ID"
@@ -187,7 +202,7 @@ export default function LotteryEntrance() {
                 />
                 <button
                   onClick={tokenHandleClick}
-                  class="flex-shrink-0 bg-violet-500 hover:bg-violet-700 border-violet-500 hover:border-violet-700 text-sm border-4 text-white py-1 px-2 rounded"
+                  className="flex-shrink-0 bg-violet-500 hover:bg-violet-700 border-violet-500 hover:border-violet-700 text-sm border-4 text-white py-1 px-2 rounded"
                   type="button"
                 >
                   Check Win
