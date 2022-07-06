@@ -21,6 +21,7 @@ export default function LotteryEntrance() {
   const [raffleState, setRaffleState] = useState("0")
   const [raffleAddress, setRaffleAddress] = useState("0")
   const [winMsg, setWinMsg] = useState(" ")
+  const [enterAmount, setEnterAmount] = useState("0")
 
   const formatUnits = ethers.utils.formatUnits
   const parseEther = ethers.utils.parseEther
@@ -99,6 +100,26 @@ export default function LotteryEntrance() {
     checkWin()
   }
 
+  const raffleHandleClick = (event) => {
+    event.preventDefault()
+    enterRaffle()
+  }
+
+  const enterRaffle = async () => {
+    setEnterAmount()
+    if (!raffleState.isOpen) {
+      alert("This Raffle is not opened yet!")
+    } else {
+      const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner()
+      const theAddress = raffleAddress.toString()
+      const raffle = new ethers.Contract(theAddress, abi, signer)
+      await raffle.enterRaffle({
+        value: itemPrice.add(enterAmount),
+        gasLimit: 200000,
+      })
+    }
+  }
+
   async function checkWin() {
     const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner()
     console.log(raffleAddress.toString())
@@ -118,7 +139,20 @@ export default function LotteryEntrance() {
       {raffleFactoryAddress ? (
         <div className="p-5 bg-center">
           <div className="text-xl	text-fuchsia-500">Raffle Entrance!</div>
-          <button
+          <form class="w-full max-w-sm">
+            <div class="flex items-center border-b border-violet-500 py-2">
+              <input
+                class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+                type="text"
+                placeholder="Enter Amount "
+                aria-label="Enter Raffle"
+              />
+              <button className="bg-violet-500 hover:bg-violet-600 text-white font-mono py-1 px-6 rounded self-center" onClick={raffleHandleClick}>
+                Enter Raffle
+              </button>
+            </div>
+          </form>
+          {/* <button
             className="bg-violet-500 hover:bg-violet-600 text-white font-mono py-2 px-4 rounded self-center"
             onClick={async function () {
               if (!raffleState.isOpen) {
@@ -135,7 +169,7 @@ export default function LotteryEntrance() {
             }}
           >
             Enter Raffle
-          </button>
+          </button> */}
           <div>Item Price: {ethers.utils.formatUnits(itemPrice.toString(), "ether")}</div>
           <div>Total Deposited: {formatUnits(totalDeposited.toString())}</div>
           <div>Winning Number: {recentWinNum.toString()}</div>
@@ -165,9 +199,7 @@ export default function LotteryEntrance() {
       ) : (
         <div className="text-red-500">Connect to the valid Network! </div>
       )}
-      <div>
-        {winMsg}
-      </div>
+      <div>{winMsg}</div>
     </div>
   )
 }
