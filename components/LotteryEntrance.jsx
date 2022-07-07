@@ -21,7 +21,8 @@ export default function LotteryEntrance() {
   const [recentWinNum, setRecentWinNum] = useState("0")
   const [raffleState, setRaffleState] = useState("0")
   const [raffleAddress, setRaffleAddress] = useState("")
-  const [winMsg, setWinMsg] = useState(" ")
+  const [winMsg, setWinMsg] = useState("")
+  const [isOwner, setIsOwner] = useState(0)
   const inputRef = useRef(0)
 
   const formatUnits = ethers.utils.formatUnits
@@ -38,6 +39,7 @@ export default function LotteryEntrance() {
     setTotalDeposited(await raffle.s_total_deposited())
     setRecentWinNum(await raffle.s_winNum())
     setRaffleState(await raffle.s_raffleState())
+    checkOwner()
   }
 
   async function updatePrice() {
@@ -55,11 +57,19 @@ export default function LotteryEntrance() {
     const theAddress = await raffleFactory.raffles(id)
     setRaffleAddress(theAddress)
   }
+
+  useEffect(() => {
+    if (isWeb3Enabled) {
+      checkOwner()
+    }
+  }, [isWeb3Enabled])
+
   useEffect(() => {
     if (isWeb3Enabled) {
       loadRaffleAddress()
     }
   }, [isWeb3Enabled])
+
   useEffect(() => {
     if (isWeb3Enabled) {
       if (raffleAddress) {
@@ -114,6 +124,22 @@ export default function LotteryEntrance() {
     enterRaffle()
   }
 
+  const raffleStartHandleClick = (event) => {
+    startRaffle()
+  }
+
+  const startRaffle = async () => {
+    const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner()
+    const theAddress = raffleAddress.toString()
+
+    if (raffleState.isOpen) {
+      alert("Raffle is already open")
+    } else {
+      const raffle = new ethers.Contract(theAddress, abi, signer)
+      await raffle.startRaffle()
+    }
+  }
+
   const enterRaffle = async () => {
     const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner()
     const theAddress = raffleAddress.toString()
@@ -153,103 +179,95 @@ export default function LotteryEntrance() {
     const raffle = new ethers.Contract(raffleAddress, abi, signer)
     const accountAddress = (await signer.getAddress()).toString()
     const owner = await raffle.i_owner()
-    return accountAddress == owner
+    console.log(accountAddress, owner)
+    console.log(accountAddress == owner)
+    setIsOwner(accountAddress == owner)
   }
 
   return (
-    <div className="flex justify-center items-center flex-col">
-      {raffleFactoryAddress ? (
-        <div className="p-5 bg-center">
-          <div className="text-xl	text-fuchsia-500">
-            <h1>Raffle Entrance!</h1>
-          </div>
-          <form className="w-full max-w-sm">
-            <div className="flex items-center border-b border-violet-500 py-2">
-              <input
-                ref={inputRef}
-                className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
-                type="text"
-                placeholder="Enter Amount "
-                aria-label="Enter Raffle"
-                onChange={raffleHandleChange}
-              />
-              <button className="bg-violet-500 hover:bg-violet-600 text-white font-mono py-1 px-6 rounded self-center" onClick={raffleHandleClick}>
-                Enter Raffle
+    <div class="flex items-center justify-center pt-5 max-w-full">
+      <div class="max-w-full rounded-lg shadow-lg shadow-blue-600/50 items-center justify-center pt-3 pb-5">
+        <div className="flex justify-center items-center flex-col">
+          {raffleFactoryAddress ? (
+            <div className="fp-5 bg-center">
+              <div className="text-xl	text-fuchsia-500">
+                <h1 className="flex justify-center font-sans underline underline-offset-4">Enter Raffle!</h1>
+              </div>
+              <form className="flex justify-center max-w-full">
+                <div className="flex justify-center border-b border-violet-500 py-2">
+                  <input
+                    ref={inputRef}
+                    className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+                    type="text"
+                    placeholder="Enter Amount "
+                    aria-label="Enter Raffle"
+                    onChange={raffleHandleChange}
+                  />
+                  <button className="max-w-full bg-violet-500 hover:bg-violet-600 text-white py-1 px-2 rounded self-center font-sans" onClick={raffleHandleClick}>
+                    Enter Raffle
+                  </button>
+                </div>
+              </form>
+              <div className="mx-5 py-3">
+                <div className="flex justify-center">
+                  🏷 &nbsp; <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">Item Price:</span>{" "}
+                  <span className="text-blue-500">{formatUnits(itemPrice.toString())}</span>
+                </div>
+                <div className="flex justify-center">
+                  🏦 &nbsp; <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">Total Deposited:</span>{" "}
+                  <span className="text-blue-500">{formatUnits(totalDeposited.toString())}</span>
+                </div>
+                <div className="flex justify-center">
+                  🏆 &nbsp; <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">Winning Number:</span>{" "}
+                  <span className="text-blue-500">{recentWinNum.toString()}</span>
+                </div>
+                <div className="flex justify-center">
+                  🎟 &nbsp; <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">Raffle State:</span> <span className="text-blue-500">{raffleState.toString()}</span>
+                </div>
+                <div className="flex justify-center">
+                  🏠 &nbsp; <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500"> Address:</span> <span className="text-blue-500">{raffleAddress.toString()}</span>
+                </div>
+              </div>
+
+              <div className="flex justify-center">
+                <form className="w-full max-w-sm">
+                  <div className="flex items-center border-b border-violet-500 py-2">
+                    <input
+                      className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+                      type="text"
+                      placeholder="Enter Token ID ... "
+                      aria-label="Token ID"
+                      onChange={handleChange}
+                    />
+                    <button
+                      onClick={tokenHandleClick}
+                      className="flex-shrink-0 bg-violet-500 hover:bg-violet-700 border-violet-500 hover:border-violet-700 text-sm border-4 text-white py-1 px-2 rounded font-sans"
+                      type="button"
+                    >
+                      Check Win
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          ) : (
+            <div className="text-red-500 p-5">Connect to the valid Network! </div>
+          )}
+          <div className="justify-center items-center">{winMsg}</div>
+          <a href="https://rinkeby.etherscan.io/token/0xe598b9f221f5e0f65207b1fc23e41e27c1f0fba0" className="p-5 hover:text-blue-600">
+            Token Info Etherscan
+          </a>
+          {isOwner ? (
+            <div>
+              <button className="bg-red-500 hover:bg-red-600 text-white py-1 px-6 rounded self-center font-sans" onClick={raffleStartHandleClick}>
+                Start Raffle
               </button>
             </div>
-          </form>
-          {/* <button
-            className="bg-violet-500 hover:bg-violet-600 text-white font-mono py-2 px-4 rounded self-center"
-            onClick={async function () {
-              if (!raffleState.isOpen) {
-                alert("This Raffle is not opened yet!")
-              } else {
-                const signer = new ethers.providers.Web3Provider(window.ethereum).getSigner()
-                const theAddress = raffleAddress.toString()
-                const raffle = new ethers.Contract(theAddress, abi, signer)
-                await raffle.enterRaffle({
-                  value: itemPrice.add(parseEther("0.05")),
-                  gasLimit: 200000,
-                })
-              }
-            }}
-          >
-            Enter Raffle
-          </button> */}
-          <div>
-            <div>
-              🏷 <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">Item Price:</span>{" "}
-              <span className="text-blue-500">{formatUnits(itemPrice.toString())}</span>
-            </div>
-            <div>
-              🏦 <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">Total Deposited:</span>{" "}
-              <span className="text-blue-500">{formatUnits(totalDeposited.toString())}</span>
-            </div>
-            <div>
-              🏆 <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">Winning Number:</span> <span className="text-blue-500">{recentWinNum.toString()}</span>
-            </div>
-            <div>
-              🎟 <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">Raffle State:</span> <span className="text-blue-500">{raffleState.toString()}</span>
-            </div>
-            <div>
-              🏠 <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">Raffle Address:</span> <span className="text-blue-500">{raffleAddress.toString()}</span>
-            </div>
-          </div>
-
-          <div>
-            <form className="w-full max-w-sm">
-              <div className="flex items-center border-b border-violet-500 py-2">
-                <input
-                  className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
-                  type="text"
-                  placeholder="Enter Token ID ... "
-                  aria-label="Token ID"
-                  onChange={handleChange}
-                />
-                <button
-                  onClick={tokenHandleClick}
-                  className="flex-shrink-0 bg-violet-500 hover:bg-violet-700 border-violet-500 hover:border-violet-700 text-sm border-4 text-white py-1 px-2 rounded"
-                  type="button"
-                >
-                  Check Win
-                </button>
-              </div>
-            </form>
-          </div>
+          ) : (
+            <div></div>
+          )}
         </div>
-      ) : (
-        <div className="text-red-500">Connect to the valid Network! </div>
-      )}
-      <div className="justify-center items-center">{winMsg}</div>
-      {/* {checkOwner() ? (
-        <div>
-          <button className="bg-red-500 hover:bg-violet-600 text-white font-mono py-1 px-6 rounded self-center" onClick={raffleHandleClick}>
-            Start Raffle
-          </button>
-        </div>
-      ) : (
-        <div />
-      )} */}
+      </div>
     </div>
   )
 }

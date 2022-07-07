@@ -11,7 +11,7 @@ export default function Raffle() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Smart Contract Lottery</title>
+        <title>Enter Raffle</title>
         <meta name="description" content="Our Smart Contract Lottery" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
