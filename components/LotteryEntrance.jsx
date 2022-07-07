@@ -20,7 +20,7 @@ export default function LotteryEntrance() {
   const [totalDeposited, setTotalDeposited] = useState("0")
   const [recentWinNum, setRecentWinNum] = useState("0")
   const [raffleState, setRaffleState] = useState("0")
-  const [raffleAddress, setRaffleAddress] = useState("")
+  const [raffleAddress, setRaffleAddress] = useState(0)
   const [winMsg, setWinMsg] = useState("")
   const [isOwner, setIsOwner] = useState(0)
   const inputRef = useRef(0)
@@ -203,7 +203,10 @@ export default function LotteryEntrance() {
                     aria-label="Enter Raffle"
                     onChange={raffleHandleChange}
                   />
-                  <button className="max-w-full bg-violet-500 hover:bg-violet-600 text-white py-1 px-2 rounded self-center font-sans" onClick={raffleHandleClick}>
+                  <button
+                    className="flex-shrink-0 bg-violet-500 hover:bg-violet-700 border-violet-500 hover:border-violet-700 text-sm border-4 text-white py-1 px-2 rounded font-sans"
+                    onClick={raffleHandleClick}
+                  >
                     Enter Raffle
                   </button>
                 </div>
@@ -222,10 +225,12 @@ export default function LotteryEntrance() {
                   <span className="text-blue-500">{recentWinNum.toString()}</span>
                 </div>
                 <div className="flex justify-center">
-                  🎟 &nbsp; <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">Raffle State:</span> <span className="text-blue-500">{raffleState.toString()}</span>
+                  🎟 &nbsp; <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">Raffle State:</span>{" "}
+                  <span className="text-blue-500">{raffleState.toString()}</span>
                 </div>
                 <div className="flex justify-center">
-                  🏠 &nbsp; <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500"> Address:</span> <span className="text-blue-500">{raffleAddress.toString()}</span>
+                  🏠 &nbsp; <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500"> Address:</span>{" "}
+                  <span className="text-blue-500">{raffleAddress.toString()}</span>
                 </div>
               </div>
 
@@ -249,14 +254,17 @@ export default function LotteryEntrance() {
                   </div>
                 </form>
               </div>
+              <div className="flex justify-center">
+                <div className="justify-center items-center">{winMsg}</div>
+                <a href="https://rinkeby.etherscan.io/token/0xe598b9f221f5e0f65207b1fc23e41e27c1f0fba0" className="p-5 hover:text-blue-600 justify-center">
+                  Token Info Etherscan
+                </a>
+              </div>
             </div>
           ) : (
             <div className="text-red-500 p-5">Connect to the valid Network! </div>
           )}
-          <div className="justify-center items-center">{winMsg}</div>
-          <a href="https://rinkeby.etherscan.io/token/0xe598b9f221f5e0f65207b1fc23e41e27c1f0fba0" className="p-5 hover:text-blue-600">
-            Token Info Etherscan
-          </a>
+
           {isOwner ? (
             <div>
               <button className="bg-red-500 hover:bg-red-600 text-white py-1 px-6 rounded self-center font-sans" onClick={raffleStartHandleClick}>
